@@ -7,7 +7,7 @@ Sample cylinder point cloud:
 
 ## Files
 - [prepare_data.py](prepare_data.py) — Point cloud data generation for cylinders, rectangular parallelepipeds, and toruses.
-- [pointnet.py]() — PointNet implementation.
+- [pointnet.py](pointnet.py) — PointNet implementation.
 
 ## Overview
 - Criterion: negative log likelihood loss (NLL), typical for classification with several classes.
@@ -26,3 +26,4 @@ Sample cylinder point cloud:
 
 ## Helpful Links
 - [PointNet Explained Visually](https://datascienceub.medium.com/pointnet-implementation-explained-visually-c7e300139698)
+
