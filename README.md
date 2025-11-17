@@ -26,4 +26,6 @@ Sample cylinder point cloud:
 
 ## Helpful Links
 - [PointNet Explained Visually](https://datascienceub.medium.com/pointnet-implementation-explained-visually-c7e300139698)
+- [An In-Depth Look at PointNet](https://medium.com/@luis_gonzales/an-in-depth-look-at-pointnet-111d7efdaa1a)
+
 
