@@ -8,6 +8,8 @@ from torch.utils.data import DataLoader
 from torch.utils import data
 from PIL import Image 
 import torchvision.transforms as transforms 
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 from os import listdir
 from os import makedirs
@@ -28,7 +30,9 @@ def visualize(x):
     plt.title("Point Set")
      
     # show plot
-    plt.show()
+    # plt.show()
+    plt.savefig('point_cloud.png')  # Save instead of show
+    plt.close()
 
 
 class DatasetFromFolder(data.Dataset):
@@ -164,7 +168,7 @@ if not exists('mypointnet.pt'):
     
     num_epochs = 10
     num_w = 4  
-    batch_s = 64
+    batch_s = 32
     
     #Loss and optimizer
     optimizer = optim.SGD(myptnet.parameters(), lr=0.001, momentum=0.9)
@@ -200,7 +204,8 @@ if not exists('mypointnet.pt'):
     plt.plot(losslog, label = 'loss ({:.4f})'.format(losslog[-1]))
     plt.xlabel("Epochs")
     plt.legend()
-    plt.show()
+    # plt.show()
+    plt.savefig('training_loss.png')  #
     plt.close()
     
     torch.save(myptnet.state_dict(), 'mypointnet.pt')
@@ -208,10 +213,14 @@ if not exists('mypointnet.pt'):
 else :
     #read the saved model
     myptnet.load_state_dict(torch.load('mypointnet.pt'))
+    myptnet.to(device)
     myptnet.eval()
 
 testset = DatasetFromFolder("data/test")
 testloader = DataLoader(testset, num_workers=4, batch_size=1, shuffle=False)
+
+sample_input, _ = testset[0]
+visualize(sample_input.transpose(1,0).numpy())  # Transpose back to (N, 3) format
 
 gtlabels = []
 predlabels = []
@@ -229,5 +238,8 @@ for i, data in enumerate(testloader, 0):
     predlabels.append(int(predicted.item()))
 
 cm = confusion_matrix(gtlabels, predlabels)
-ConfusionMatrixDisplay(cm).plot()
-
+# ConfusionMatrixDisplay(cm).plot()
+disp = ConfusionMatrixDisplay(cm)
+disp.plot()
+plt.savefig('confusion_matrix.png')  # Save instead of show
+plt.close()
